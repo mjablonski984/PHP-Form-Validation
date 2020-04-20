@@ -33,18 +33,25 @@
 
 <html lang="en">
     <?php include('templates/header.php') ?>    
-    <main class="container">
-        <div class="container center blue-grey-text">
+    <main class="container valign-wrapper">
+        <div class="container center white brown-text ">
             <?php if($burger): ?>
-            <h4><?php echo htmlspecialchars($burger['name']);?></h4>
+            <img src="img/burger.svg" class="burger" alt="burger">
+
+            <h4 class="brown-text"><?php echo htmlspecialchars($burger['name']);?></h4>
             <p><?php echo htmlspecialchars($burger['name']);?></p>
             <p>A <?php echo htmlspecialchars($burger['type']); ?> burger</p>
             <p>Roll type: <?php echo htmlspecialchars($burger['roll']); ?> </p>
             <h5>Ingredients:</h5>
-            <p><?php echo htmlspecialchars($burger['ingredients']); ?></p>
+            <ul>
+                <?php foreach( explode(',',$burger['ingredients']) as $ing): ?>
+                <li><?php echo htmlspecialchars($ing); ?></li>
+                <?php endforeach ?> 
+            </ul>
 
             <p>Created by: <?php echo htmlspecialchars($burger['email']); ?></p>
             <p><?php echo date($burger['created_at']); ?></p>
+
             <!-- Delete form -->
             <form action="details.php" method="post">
             <input type="hidden" name="id_to_delete" value=<?php echo $burger['id']; ?>>

@@ -1,9 +1,6 @@
-<?php 
 
-?>
-
-<footer class="section">
-      <div class="container grey-text center">         
+<footer class="section amber darken-4">
+      <div class="container white-text center">         
             © <?php echo date('Y')?> Burger Wizard
       </div>
 </footer>

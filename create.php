@@ -12,8 +12,8 @@
             $errors['name'] = 'A name is required <br>';
         }else{
             $name = $_POST['name'];
-            if(!preg_match('/^[a-zA-Z\s]+$/', $name)){
-                $errors['name'] = 'The name may only contain letters and spaces';
+            if(!preg_match('/^[a-zA-Z\s]{1,30}$/', $name)){
+                $errors['name'] = 'The name may contain max 30 characters (letters and spaces)';
             }
         }
 
@@ -32,7 +32,7 @@
             $errors['roll'] = 'Please select a roll type<br>';
         }else{
             if(in_array($_POST['roll'], ['sesame','pretzel','onion'])){
-            $type = $_POST['roll'];
+            $roll = $_POST['roll'];
             
             }else{ 
             $errors['roll'] = 'Select one of the roll types: sesame, pretzel or onion';
@@ -87,7 +87,7 @@
 <html lang="en">
     <?php include('templates/header.php'); ?>
       
-    <main class="container blue-grey-text">
+    <main class="container brown-text">
         <h3 class="center"> Create a Burger</h3>
 
         <form class="white" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
@@ -108,6 +108,7 @@
             <div class="red-text"><?php echo $errors['type']?></div>
 
             <p>
+            <label>Roll Type:</label>
             <label>
             <input name="roll" type="radio" value="sesame" <?php echo ($roll=='sesame')?'checked':'' ?> />
             <span>Sesame</span>
@@ -124,7 +125,7 @@
             <div class="red-text"><?php echo $errors['roll']?></div>
             
             <label>Other Ingredients (coma separated): </label>
-            <input type="text" name="ingredients"  value="<?php echo htmlspecialchars($ingredients);?>">
+            <textarea name="ingredients"   class="materialize-textarea" ><?php echo htmlspecialchars($ingredients);?></textarea>
             <div class="red-text"><?php echo $errors['ingredients']?></div>
             
             <label>Your Email: </label>

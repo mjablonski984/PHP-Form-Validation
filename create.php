@@ -1,93 +1,5 @@
 <?php 
-    include('config/db_connect.php');
-
-
-     $name=$type=$roll=$ingredients=$email='';
-
-     $errors = array( 'name'=>'' ,'type'=> '', 'roll'=>'', 'ingredients'=>'', 'email'=>'');
-    
-     function test_input($data){
-         $data = trim($data);
-         $data = stripslashes($data);
-         $data = htmlspecialchars($data);
-         return $data;
-     }   
-
-     if(isset($_POST['submit'])){
-
-        if(empty($_POST['name'])){
-            $errors['name'] = 'A name is required <br>';
-        }else{
-            $name = test_input($_POST['name']);
-            if(!preg_match('/^[a-zA-Z\s]{1,30}$/', $name)){
-                $errors['name'] = 'The name may contain max 30 characters (letters and spaces)';
-            }
-        }
-
-        if(empty($_POST['type'])){
-            $errors['type'] = 'Please select a burger type<br>';
-        }else{
-            if(in_array($_POST['type'], ['beef','chicken','veggie'])){
-                $type = test_input($_POST['type']);
-               
-            }else{ 
-                $errors['type'] = 'Select on of burger types: beef, chicken or veggie';
-            }             
-        }
-
-        if(empty($_POST['roll'])){
-            $errors['roll'] = 'Please select a roll type<br>';
-        }else{
-            if(in_array($_POST['roll'], ['sesame','pretzel','onion'])){
-            $roll = test_input($_POST['roll']);
-            
-            }else{ 
-            $errors['roll'] = 'Select one of the roll types: sesame, pretzel or onion';
-            }         
-        }
-
-
-        if(empty($_POST['ingredients'])){
-            $errors['ingredients'] = 'At least one ingredient is required <br>';
-        }else{
-            $ingredients = test_input($_POST['ingredients']);
-        
-            if(!preg_match('/^([a-zA-Z\s]+)(,\s*[a-zA-Z\s]*)*$/', $ingredients)){
-                $errors['ingredients'] = 'Ingredients must be a comma separated list';
-            }
-        }
-
-        if(empty($_POST['email'])){
-            $errors['email'] = 'An email is required <br>';
-        }else{
-            $email = test_input($_POST['email']);
-            
-            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $errors['email'] = 'Please enter a valid email address'; 
-            }
-        }    
-
-
-        if(!array_filter($errors)){
-            //prepare data to saving in db (real_escape_string protects from sql injections);
-            $name = mysqli_real_escape_string($conn,test_input($_POST['name']));
-            $type = mysqli_real_escape_string($conn,test_input($_POST['type']));
-            $roll = mysqli_real_escape_string($conn,test_input($_POST['roll']));
-            $ingredients = mysqli_real_escape_string($conn,test_input($_POST['ingredients']));
-            $email = mysqli_real_escape_string($conn,test_input($_POST['email']));
-        
-            $sql = "INSERT INTO burgers(name,email,ingredients,type,roll) VALUES('$name','$email','$ingredients','$type','$roll')";
-        
-                // save to db and check
-            if(mysqli_query($conn,$sql)){
-                header('Location: index.php');// succes - redirect to index.php
-            } else {
-                echo 'Query error: ' . mysqli_error($conn);
-            }
-          }
-     }
-
-     
+    require('form_validator.php');
 ?>
 
 <!DOCTYPE html>
@@ -113,7 +25,7 @@
                 <label>Burger Type:</label>
             </div>
             <div class="red-text"><?php echo $errors['type']?></div>
-
+            
             <p>
             <label>Roll Type:</label>
             <label>

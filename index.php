@@ -1,20 +1,7 @@
 <?php 
-    // db connection
-    include('config/db_connect.php');
- 
-    $sql = 'SELECT * FROM burgers ORDER BY created_at';
-
-    // make query & get results
-    $result = mysqli_query($conn, $sql);
-
-    // fetch the resulting rows as an assoc. array
-    $burgers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-   // free $result from memory
-    mysqli_free_result($result);
-
-    //close connection
-    mysqli_close($conn);
+    require('./classes/burgers.php');
+    $burgers_class = new Burgers;
+    $burgers = $burgers_class->getBurgers();
 
 ?>
 

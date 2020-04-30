@@ -1,34 +1,15 @@
 <?php 
-  include('config/db_connect.php');
-
-    // check id param
-   if(isset($_GET['id'])){
-    $id = mysqli_real_escape_string($conn,$_GET['id']);
-
-    $sql = "SELECT * FROM burgers WHERE id = $id";
-
-    // get the query result
-    $result = mysqli_query($conn,$sql);
-
-    //fetch single row in array format
-    $burger = mysqli_fetch_assoc($result);
+    require('./classes/burgers.php');
     
-    mysqli_free_result($result);
-    mysqli_close($conn);
-   }
-   
-   if(isset($_POST['delete'])){    
-    $id_to_delete = mysqli_real_escape_string($conn,$_POST['id_to_delete']);
-    
-    $sql = "DELETE FROM burgers WHERE id=$id_to_delete";
+    $burgers_class = new Burgers;
 
-    if(mysqli_query($conn,$sql)){
-        header('Location: index.php');
-    }else{
-        echo 'Query error: ' . mysqli_error($conn);
-    };
+    if(isset($_GET['id'])){
+    $burger = $burgers_class->getBurger($_GET['id']);
     }
 
+    if(isset($_POST['delete'])){ 
+     $burgers_class->deleteBurger($_POST['id_to_delete']);
+    }
 ?>
 
 <html lang="en">
@@ -54,6 +35,7 @@
 
             <!-- Delete form -->
             <form action="details.php" method="post">
+            <!-- Hidden input with id to delete passed to the method -->
             <input type="hidden" name="id_to_delete" value=<?php echo $burger['id']; ?>>
             <input type="submit" name="delete" value="Delete" class="btn amber darken-2">
             </form>

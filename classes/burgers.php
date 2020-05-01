@@ -14,6 +14,17 @@ class Burgers extends Dbh{
         $burgers = $stmt->fetchAll();
         return $burgers;
     }
+
+    public function searchBurgers($input) {
+        // search for string including value of $input; wildcard % represents zero or more chars
+        $search = "%$input%"; 
+        $sql = "SELECT * FROM burgers WHERE name LIKE :name OR type LIKE :type OR roll LIKE :roll"; 
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute(['name'=>$search, 'type'=>$search, 'roll'=>$search]);
+
+        $burgers = $stmt->fetchAll();
+        return $burgers;
+    }
     
     public function getBurger($id) {
         $sql = "SELECT * FROM burgers WHERE id = :id"; 

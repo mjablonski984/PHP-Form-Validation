@@ -1,8 +1,12 @@
 <?php 
     require('./classes/burgers.php');
     $burgers_class = new Burgers;
-    $burgers = $burgers_class->getBurgers();
-
+    
+    if(isset($_POST['search'])){
+        $burgers = $burgers_class->searchBurgers($_POST['search']);
+    } else {
+        $burgers = $burgers_class->getBurgers();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +18,15 @@
         </div>
 
         <h3 class="center brown-text">Burgers</h3>
+
+        <form action="<?php $_SERVER["PHP_SELF"]?>" method="post">
+            <div class="input-field">
+                <input id="search" type="search" name="search" required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                <i class="material-icons">&times;</i>
+            </div>
+        </form>
+
         <div>
           <div class="row">
                <?php foreach($burgers as $burger):?>
